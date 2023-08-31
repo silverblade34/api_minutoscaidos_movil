@@ -1,36 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 import { Task, TaskStatus } from './tasks.entity';
-import { v4 } from 'uuid';
+import { Tasks, TasksDocument } from './schema/tasks.schema';
+import { Model } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class TasksService {
-    private tasks: Task[] = [
-        {
-            id: '1',
-            title: 'first task',
-            description: 'some task',
-            status: TaskStatus.PENDING
-        }
-    ]
+
+    constructor(
+        @InjectModel(Tasks.name) private tasksModule: Model<TasksDocument>
+    ) { }
 
     getALLTasks() {
-        return this.tasks;
+        return this.tasksModule.find();
     }
     createTasks(title: string, description: string) {
         const task: Task = {
-            id: v4(),
             title,
             description,
             status: TaskStatus.PENDING
         }
-        this.tasks.push(task)
-        return this.tasks;
+        // Utilizamos el método create() para insertar un único documento
+        const newTask = new this.tasksModule(task);
+        return newTask.save(); // Guardamos el documento y retornamos la promesa
     }
     updateTasks() {
 
     }
     deleteTasks(id: string) {
-        this.tasks = this.tasks.filter(task => task.id !== id)
-        return this.tasks;
+        const objectId = new ObjectId(id); // Convertir el string a ObjectId
+        return this.tasksModule.deleteOne({ _id: objectId }).exec();
     }
 }
