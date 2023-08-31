@@ -1,9 +1,9 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { LoginAuthDto, RegisterAuthDto } from './dto/login.dto';
+import { LoginAuthDto, RegisterAuthDto } from './dto/auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from 'src/users/schema/user.schema';
 import { Model } from 'mongoose';
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -14,7 +14,12 @@ export class AuthService {
     ) { }
 
     async registerUser(registerAuthDto: RegisterAuthDto) {
-        return this.userModule.find();
+        // Genera el hash encriptado de la contraseña
+        const hashedPassword = await hash(registerAuthDto.password, 10);
+        registerAuthDto.password = hashedPassword
+        const newUser = new this.userModule(registerAuthDto)
+        const createdUser = await newUser.save();
+        return createdUser
     }
 
     async loginUser(userObjectLogin: LoginAuthDto) {
