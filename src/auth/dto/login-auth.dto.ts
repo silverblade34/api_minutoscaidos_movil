@@ -1,9 +1,10 @@
 import { IsNotEmpty } from 'class-validator'
 
-export class CreateTaskDto {
+export class LoginAuthDto {
     @IsNotEmpty()
-    title: string
+    user: string
     
     @IsNotEmpty()
-    description: string
+    password: string
 }
+

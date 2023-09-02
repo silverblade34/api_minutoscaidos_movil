@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Task, TaskStatus } from './tasks.entity';
-import { Tasks, TasksDocument } from './schema/tasks.schema';
+import { Tasks, TasksDocument } from './schemas/tasks.schema';
 import { Model } from 'mongoose';
 import { ObjectId } from 'mongodb';
 

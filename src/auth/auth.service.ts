@@ -1,7 +1,8 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { LoginAuthDto, RegisterAuthDto } from './dto/auth.dto';
+import { LoginAuthDto } from './dto/login-auth.dto';
+import { RegisterAuthDto } from './dto/register-auth.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from 'src/users/schema/user.schema';
+import { User, UserDocument } from 'src/users/schemas/user.schema';
 import { Model } from 'mongoose';
 import { compare, hash } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
@@ -24,16 +25,12 @@ export class AuthService {
 
     async loginUser(userObjectLogin: LoginAuthDto) {
         const { user, password } = userObjectLogin;
-        const findUser = await this.userModule.findOne({ user })
+        let findUser = await this.userModule.findOne({ user })
         if (!findUser) throw new HttpException('USER_NOT_FOUND', 404);
         const checkPassword = await compare(password, findUser.password);
         if (!checkPassword) throw new HttpException('PASSWORD_INCORRECT', 403);
-        const payload = {id:findUser._id, user:findUser.user}
-        const token = this.jwtService.sign(payload);
-        const data = {
-            token,
-            user: findUser
-        }
-        return data;
+        const payload = { id: findUser._id, user: findUser.user }
+        const userWithToken = { ...findUser.toJSON(), token: this.jwtService.sign(payload) };
+        return userWithToken;
     }
 }

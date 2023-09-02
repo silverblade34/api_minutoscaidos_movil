@@ -3,29 +3,17 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 // Declaramos un tipo de dato que representa un documento de tipo User en la base de datos
-export type UserDocument = User & Document;
+export type UnitsDocument = Units & Document;
 
 // Definimos el esquema de la entidad "User" usando el decorador @Schema()
-@Schema({ collection: 'users', versionKey: false })
-export class User {
+@Schema({ collection: 'units', versionKey: false })
+export class Units {
     @Prop()
-    user: string;
+    owner: string;
 
     @Prop()
-    password: string;
-
-    @Prop()
-    rol: string;
-
-    @Prop()
-    status: boolean;
-
-    @Prop()
-    code: number; 
-
-    @Prop()
-    business: string;
+    plate: string;
 }
 
 // Creamos el esquema real utilizando la fábrica de esquemas de Mongoose
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UnitsSchema = SchemaFactory.createForClass(Units);

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Tasks, TasksSchema } from './schema/tasks.schema';
+import { Tasks, TasksSchema } from './schemas/tasks.schema';
 
 @Module({
   // Definimos los módulos importados
