@@ -9,7 +9,6 @@ import { getRides } from './request/rides.request';
 import { User, UserDocument } from 'src/users/schemas/user.schema';
 import { Business, BusinessDocument } from './schemas/business.schema';
 import { Units, UnitsDocument } from 'src/units/schemas/units.schema';
-import { Rides, RidesDocument } from './schemas/rides.schema';
 import { Stop } from './entity/stop.entity';
 
 @Injectable()
@@ -18,7 +17,6 @@ export class RidesService {
 
     constructor(
         @InjectModel(User.name) private userModule: Model<UserDocument>,
-        @InjectModel(Rides.name) private ridesModule: Model<RidesDocument>,
         @InjectModel(Business.name) private businessModule: Model<BusinessDocument>,
         @InjectModel(Units.name) private unitsModule: Model<UnitsDocument>
     ) { }
