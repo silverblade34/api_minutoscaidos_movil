@@ -13,6 +13,9 @@ export class Units {
 
     @Prop()
     plate: string;
+
+    @Prop()
+    unit: number;
 }
 
 // Creamos el esquema real utilizando la fábrica de esquemas de Mongoose
